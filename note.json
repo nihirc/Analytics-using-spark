@@ -1,0 +1,1124 @@
+{
+  "paragraphs": [
+    {
+      "text": "%md\nThe log files used in this notebook were downloaded from http://ita.ee.lbl.gov/html/contrib/ClarkNet-HTTP.html for learning purpose. The files contains 3,328,587 HTTP requests made over the period of 2 weeks from August 24 to September 10. \n",
+      "user": "anonymous",
+      "dateUpdated": "Jan 8, 2018 3:07:09 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/text",
+        "editorHide": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cp\u003eThe log files used in this notebook were downloaded from http://ita.ee.lbl.gov/html/contrib/ClarkNet-HTTP.html for learning purpose. The files contains 3,328,587 HTTP requests made over the period of 2 weeks from August 24 to September 10.\u003c/p\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1515377330323_97273300",
+      "id": "20180108-020850_1388855110",
+      "dateCreated": "Jan 8, 2018 2:08:50 AM",
+      "dateStarted": "Jan 8, 2018 3:07:10 AM",
+      "dateFinished": "Jan 8, 2018 3:07:12 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Create Spark session",
+      "text": "%pyspark\nfrom pyspark import SparkConf\nfrom pyspark.sql import SparkSession\nspark \u003d SparkSession \\\n    .builder \\\n    .appName(\u0027AnalyzingApacheLogFiles\u0027) \\\n    .config(conf\u003dSparkConf()) \\\n    .getOrCreate()",
+      "user": "anonymous",
+      "dateUpdated": "Jan 8, 2018 3:07:10 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/python",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1515377758258_-1939422100",
+      "id": "20180108-021558_704257262",
+      "dateCreated": "Jan 8, 2018 2:15:58 AM",
+      "dateStarted": "Jan 8, 2018 3:07:10 AM",
+      "dateFinished": "Jan 8, 2018 3:07:55 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Read .gz files and show top 5 lines from logs",
+      "text": "%pyspark\nlogs \u003d spark.read.text(\"s3://athena-chadderw/datasets/Downloaded/ApacheLogFiles\")\nlogs.show(5, truncate\u003dFalse)",
+      "user": "anonymous",
+      "dateUpdated": "Jan 8, 2018 3:07:10 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/python",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+------------------------------------------------------------------------------------------------------------------+\n|value                                                                                                             |\n+------------------------------------------------------------------------------------------------------------------+\n|204.249.225.59 - - [28/Aug/1995:00:00:34 -0400] \"GET /pub/rmharris/catalogs/dawsocat/intro.html HTTP/1.0\" 200 3542|\n|access9.accsyst.com - - [28/Aug/1995:00:00:35 -0400] \"GET /pub/robert/past99.gif HTTP/1.0\" 200 4993               |\n|access9.accsyst.com - - [28/Aug/1995:00:00:35 -0400] \"GET /pub/robert/curr99.gif HTTP/1.0\" 200 5836               |\n|world.std.com - - [28/Aug/1995:00:00:36 -0400] \"GET /pub/atomicbk/catalog/sleazbk.html HTTP/1.0\" 200 18338        |\n|cssu24.cs.ust.hk - - [28/Aug/1995:00:00:36 -0400] \"GET /pub/job/vk/view17.jpg HTTP/1.0\" 200 5944                  |\n+------------------------------------------------------------------------------------------------------------------+\nonly showing top 5 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1515378004595_1490009600",
+      "id": "20180108-022004_1087808057",
+      "dateCreated": "Jan 8, 2018 2:20:04 AM",
+      "dateStarted": "Jan 8, 2018 3:07:15 AM",
+      "dateFinished": "Jan 8, 2018 3:08:09 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Log files are in common log format",
+      "text": "%angular\n\n\u003chtml\u003e\n    \u003cstyle\u003e\n        table, th, td {\n        border: 1px solid black;\n        },\n        td {\n        text-align: left;\n        }\n    \u003c/style\u003e\n    \u003ctable style\u003d\"width:100%\"\u003e\n    \u003ctr\u003e\n        \u003cth style\u003d\"text-align:center\"\u003eField\u003c/th\u003e\n        \u003cth style\u003d\"text-align:center\"\u003eDefinition\u003c/th\u003e \n    \u003c/tr\u003e\n    \u003ctr\u003e\n        \u003ctd\u003eremotehost\u003c/td\u003e\n        \u003ctd\u003eHostname or IP address of the client\u003c/td\u003e\n    \u003c/tr\u003e\n    \u003ctr\u003e\n        \u003ctd\u003erfc931\u003c/td\u003e\n        \u003ctd\u003eRemote logname of the client\u003c/td\u003e\n    \u003c/tr\u003e\n    \u003ctr\u003e\n        \u003ctd\u003eauthuser\u003c/td\u003e\n        \u003ctd\u003eusername of the remote client\u003c/td\u003e\n    \u003c/tr\u003e\n    \u003ctr\u003e\n        \u003ctd\u003edate\u003c/td\u003e\n        \u003ctd\u003eDate and time the request was processed by webserver\u003c/td\u003e\n    \u003c/tr\u003e\n    \u003ctr\u003e\n        \u003ctd\u003erequest\u003c/td\u003e\n        \u003ctd\u003eThe page requested\u003c/td\u003e\n    \u003c/tr\u003e\n    \u003ctr\u003e\n        \u003ctd\u003estatus\u003c/td\u003e\n        \u003ctd\u003eHTTP status code\u003c/td\u003e\n    \u003c/tr\u003e\n    \u003ctr\u003e\n        \u003ctd\u003ebytes\u003c/td\u003e\n        \u003ctd\u003eThe number of bytes transferred to the client\u003c/td\u003e\n    \u003c/tr\u003e\n\u003c/table\u003e\n\u003c/html\u003e\n",
+      "user": "anonymous",
+      "dateUpdated": "Jan 8, 2018 3:07:14 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/text",
+        "editorHide": true,
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "ANGULAR",
+            "data": "\u003chtml\u003e\n    \u003cstyle\u003e\n        table, th, td {\n        border: 1px solid black;\n        },\n        td {\n        text-align: left;\n        }\n    \u003c/style\u003e\n    \u003ctable style\u003d\"width:100%\"\u003e\n    \u003ctr\u003e\n        \u003cth style\u003d\"text-align:center\"\u003eField\u003c/th\u003e\n        \u003cth style\u003d\"text-align:center\"\u003eDefinition\u003c/th\u003e \n    \u003c/tr\u003e\n    \u003ctr\u003e\n        \u003ctd\u003eremotehost\u003c/td\u003e\n        \u003ctd\u003eHostname or IP address of the client\u003c/td\u003e\n    \u003c/tr\u003e\n    \u003ctr\u003e\n        \u003ctd\u003erfc931\u003c/td\u003e\n        \u003ctd\u003eRemote logname of the client\u003c/td\u003e\n    \u003c/tr\u003e\n    \u003ctr\u003e\n        \u003ctd\u003eauthuser\u003c/td\u003e\n        \u003ctd\u003eusername of the remote client\u003c/td\u003e\n    \u003c/tr\u003e\n    \u003ctr\u003e\n        \u003ctd\u003edate\u003c/td\u003e\n        \u003ctd\u003eDate and time the request was processed by webserver\u003c/td\u003e\n    \u003c/tr\u003e\n    \u003ctr\u003e\n        \u003ctd\u003erequest\u003c/td\u003e\n        \u003ctd\u003eThe page requested\u003c/td\u003e\n    \u003c/tr\u003e\n    \u003ctr\u003e\n        \u003ctd\u003estatus\u003c/td\u003e\n        \u003ctd\u003eHTTP status code\u003c/td\u003e\n    \u003c/tr\u003e\n    \u003ctr\u003e\n        \u003ctd\u003ebytes\u003c/td\u003e\n        \u003ctd\u003eThe number of bytes transferred to the client\u003c/td\u003e\n    \u003c/tr\u003e\n\u003c/table\u003e\n\u003c/html\u003e"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1515378102031_155269693",
+      "id": "20180108-022142_1314717061",
+      "dateCreated": "Jan 8, 2018 2:21:42 AM",
+      "dateStarted": "Jan 8, 2018 3:07:14 AM",
+      "dateFinished": "Jan 8, 2018 3:07:16 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\nNext, I will use regex to extract the fields from each line and create a column for each field. I will be ignoring rfc931 and authuser columns from the file as they only contain \u0027-\u0027. I will be making use of pythex.com to test the regex.\n",
+      "user": "anonymous",
+      "dateUpdated": "Jan 8, 2018 3:07:14 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cp\u003eNext, I will use regex to extract the fields from each line and create a column for each field. I will be ignoring rfc931 and authuser columns from the file as they only contain \u0027-\u0027. I will be making use of pythex.com to test the regex.\u003c/p\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1515378437316_-1206080829",
+      "id": "20180108-022717_261741441",
+      "dateCreated": "Jan 8, 2018 2:27:17 AM",
+      "dateStarted": "Jan 8, 2018 3:07:15 AM",
+      "dateFinished": "Jan 8, 2018 3:07:15 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Use regex to parse log files and get relevant fields",
+      "text": "%pyspark\n\nfrom pyspark.sql.functions import split, regexp_extract\nlogsDF \u003d logs.select(regexp_extract(\u0027value\u0027, r\u0027^([^\\s]+)\u0027, 1).alias(\u0027remotehost\u0027),\n                    regexp_extract(\u0027value\u0027, r\u0027^.*\\[(\\d\\d/\\w{3}/\\d{4}:\\d{2}:\\d{2}:\\d{2} -\\d{4})\\]\u0027, 1).alias(\u0027timestamp\u0027),\n                    regexp_extract(\u0027value\u0027, r\u0027^.*(\\\"\\w+\\s+([^\\s]+)\\sHTTP.*\")\u0027, 1).alias(\u0027page_requested\u0027),\n                    regexp_extract(\u0027value\u0027, r\u0027^.*(\"\\s+([^\\s]+))\u0027, 2).cast(\u0027integer\u0027).alias(\u0027status_code\u0027),\n                    regexp_extract(\u0027value\u0027, r\u0027^.*\\s+(\\d+)$\u0027, 1).cast(\u0027integer\u0027).alias(\u0027content_size\u0027))\n\nlogsDF.show(5, truncate\u003dFalse)\n",
+      "user": "anonymous",
+      "dateUpdated": "Jan 8, 2018 3:07:15 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/python",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-------------------+--------------------------+---------------------------------------------------------+-----------+------------+\n|remotehost         |timestamp                 |page_requested                                           |status_code|content_size|\n+-------------------+--------------------------+---------------------------------------------------------+-----------+------------+\n|204.249.225.59     |28/Aug/1995:00:00:34 -0400|\"GET /pub/rmharris/catalogs/dawsocat/intro.html HTTP/1.0\"|200        |3542        |\n|access9.accsyst.com|28/Aug/1995:00:00:35 -0400|\"GET /pub/robert/past99.gif HTTP/1.0\"                    |200        |4993        |\n|access9.accsyst.com|28/Aug/1995:00:00:35 -0400|\"GET /pub/robert/curr99.gif HTTP/1.0\"                    |200        |5836        |\n|world.std.com      |28/Aug/1995:00:00:36 -0400|\"GET /pub/atomicbk/catalog/sleazbk.html HTTP/1.0\"        |200        |18338       |\n|cssu24.cs.ust.hk   |28/Aug/1995:00:00:36 -0400|\"GET /pub/job/vk/view17.jpg HTTP/1.0\"                    |200        |5944        |\n+-------------------+--------------------------+---------------------------------------------------------+-----------+------------+\nonly showing top 5 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1515378783893_-1894338604",
+      "id": "20180108-023303_680653784",
+      "dateCreated": "Jan 8, 2018 2:33:03 AM",
+      "dateStarted": "Jan 8, 2018 3:07:55 AM",
+      "dateFinished": "Jan 8, 2018 3:08:11 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n\n## Data Cleaning",
+      "user": "anonymous",
+      "dateUpdated": "Jan 8, 2018 3:07:16 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch2\u003eData Cleaning\u003c/h2\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1515378805782_895521643",
+      "id": "20180108-023325_783156174",
+      "dateCreated": "Jan 8, 2018 2:33:25 AM",
+      "dateStarted": "Jan 8, 2018 3:07:17 AM",
+      "dateFinished": "Jan 8, 2018 3:07:17 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\nChecking to see if there are any null values. ",
+      "user": "anonymous",
+      "dateUpdated": "Jan 8, 2018 3:07:17 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true
+        },
+        "editorMode": "ace/mode/markdown",
+        "editorHide": true,
+        "tableHide": false
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cp\u003eChecking to see if there are any null values.\u003c/p\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1515379056495_-1457862617",
+      "id": "20180108-023736_2037740269",
+      "dateCreated": "Jan 8, 2018 2:37:36 AM",
+      "dateStarted": "Jan 8, 2018 3:07:17 AM",
+      "dateFinished": "Jan 8, 2018 3:07:17 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\n\nfrom pyspark.sql import Column\n\ndef count_null(col_name):\n    return logsDF.filter(logsDF[col_name].isNull()).count()\n",
+      "user": "anonymous",
+      "dateUpdated": "Jan 8, 2018 3:07:17 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1515379081803_1059995482",
+      "id": "20180108-023801_1917821257",
+      "dateCreated": "Jan 8, 2018 2:38:01 AM",
+      "dateStarted": "Jan 8, 2018 3:08:10 AM",
+      "dateFinished": "Jan 8, 2018 3:08:11 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\n\nfor col_name in logsDF.columns:\n    print(col_name + \" : \" + str(count_null(col_name)))",
+      "user": "anonymous",
+      "dateUpdated": "Jan 8, 2018 3:07:17 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "remotehost : 0\ntimestamp : 0\npage_requested : 0\nstatus_code : 100\ncontent_size : 274215\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1515379097126_-107717430",
+      "id": "20180108-023817_303707431",
+      "dateCreated": "Jan 8, 2018 2:38:17 AM",
+      "dateStarted": "Jan 8, 2018 3:08:11 AM",
+      "dateFinished": "Jan 8, 2018 3:08:45 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\n\nlogsDF.filter(logsDF[\u0027status_code\u0027].isNull()).show(5)",
+      "user": "anonymous",
+      "dateUpdated": "Jan 8, 2018 3:07:18 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+--------------------+--------------------+--------------+-----------+------------+\n|          remotehost|           timestamp|page_requested|status_code|content_size|\n+--------------------+--------------------+--------------+-----------+------------+\n|    rodan29.pixi.com|28/Aug/1995:07:34...|              |       null|        null|\n|dialup-4.austin.i...|28/Aug/1995:10:42...|              |       null|        null|\n|dialup-4.austin.i...|28/Aug/1995:10:48...|              |       null|        null|\n|      192.203.11.150|28/Aug/1995:12:02...|              |       null|        null|\n|         east.ge.com|28/Aug/1995:12:15...|              |       null|        null|\n+--------------------+--------------------+--------------+-----------+------------+\nonly showing top 5 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1515379110160_989433192",
+      "id": "20180108-023830_1283534076",
+      "dateCreated": "Jan 8, 2018 2:38:30 AM",
+      "dateStarted": "Jan 8, 2018 3:08:12 AM",
+      "dateFinished": "Jan 8, 2018 3:08:46 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\nChecking against original logs to verify the values and determine whether parsing caused the null values. \n",
+      "user": "anonymous",
+      "dateUpdated": "Jan 8, 2018 3:07:18 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/text",
+        "editorHide": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cp\u003eChecking against original logs to verify the values and determine whether parsing caused the null values.\u003c/p\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1515379125178_-1969655275",
+      "id": "20180108-023845_1350686057",
+      "dateCreated": "Jan 8, 2018 2:38:45 AM",
+      "dateStarted": "Jan 8, 2018 3:07:19 AM",
+      "dateFinished": "Jan 8, 2018 3:07:19 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\n\nlogs.filter(logs[\u0027value\u0027].contains(\u0027rodan29.pixi.com\u0027)).show(truncate\u003dFalse)\n",
+      "user": "anonymous",
+      "dateUpdated": "Jan 8, 2018 3:07:19 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+-------------------------------------------------------------------------------------------------------------------+\n|value                                                                                                              |\n+-------------------------------------------------------------------------------------------------------------------+\n|rodan29.pixi.com - - [28/Aug/1995:07:22:17 -0400] \"GET /pub/sshay/home.html HTTP/1.0\" 200 3145                     |\n|rodan29.pixi.com - - [28/Aug/1995:07:23:22 -0400] \"GET /pub/sshay/images/home6.gif HTTP/1.0\" 200 58652             |\n|rodan29.pixi.com - - [28/Aug/1995:07:34:01 -0400] \"GET /pub/wick HTTP/1.0\" 302 216                                 |\n|rodan29.pixi.com - - [28/Aug/1995:07:34:03 -0400] \"GET /pub/wick/                                                  |\n|rodan29.pixi.com - - [03/Sep/1995:19:54:32 -0400] \"GET /pub/phil/WinonaRyder.html HTTP/1.0\" 200 19870              |\n|rodan29.pixi.com - - [03/Sep/1995:19:54:41 -0400] \"GET /pub/phil/images/WinonaSheets-little.gif HTTP/1.0\" 200 33454|\n|rodan29.pixi.com - - [03/Sep/1995:19:55:16 -0400] \"GET /pub/phil/images/WinonaSheets-little.gif HTTP/1.0\" 200 33454|\n|rodan29.pixi.com - - [03/Sep/1995:19:55:16 -0400] \"GET /pub/phil/WinonaRyder.html HTTP/1.0\" 200 19870              |\n|rodan29.pixi.com - - [03/Sep/1995:19:55:27 -0400] \"GET /pub/phil/WinonaRyder.html HTTP/1.0\" 200 19870              |\n|rodan29.pixi.com - - [03/Sep/1995:19:55:41 -0400] \"GET /pub/phil/WinonaRyder.html HTTP/1.0\" 200 19870              |\n|rodan29.pixi.com - - [03/Sep/1995:19:55:42 -0400] \"GET /pub/phil/images/WinonaSheets-little.gif HTTP/1.0\" 200 33454|\n+-------------------------------------------------------------------------------------------------------------------+\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1515379181620_677325213",
+      "id": "20180108-023941_815739022",
+      "dateCreated": "Jan 8, 2018 2:39:41 AM",
+      "dateStarted": "Jan 8, 2018 3:08:45 AM",
+      "dateFinished": "Jan 8, 2018 3:08:50 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n\nIt appears that one of the row is missing some data. It is missing half of the information for page requested and it is missing status code and content size transferred. Let\u0027s check one more to confirm if that is the issue.\n",
+      "user": "anonymous",
+      "dateUpdated": "Jan 8, 2018 3:07:19 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/text",
+        "editorHide": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cp\u003eIt appears that one of the row is missing some data. It is missing half of the information for page requested and it is missing status code and content size transferred. Let\u0027s check one more to confirm if that is the issue.\u003c/p\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1515379198814_-1444549647",
+      "id": "20180108-023958_1312047254",
+      "dateCreated": "Jan 8, 2018 2:39:58 AM",
+      "dateStarted": "Jan 8, 2018 3:07:19 AM",
+      "dateFinished": "Jan 8, 2018 3:07:19 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark \n\nlogs.filter(logs[\u0027value\u0027].contains(\u0027192.203.11.150\u0027)).show(truncate\u003dFalse)",
+      "user": "anonymous",
+      "dateUpdated": "Jan 8, 2018 3:07:19 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------------------------------------------------------------------------+\n|value                                                                       |\n+----------------------------------------------------------------------------+\n|192.203.11.150 - - [28/Aug/1995:12:02:38 -0400] \"GET /nrlc HTTP/1.0\" 302 212|\n|192.203.11.150 - - [28/Aug/1995:12:02:39 -0400] \"GET /nrlc/                 |\n+----------------------------------------------------------------------------+\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1515379236636_-926864807",
+      "id": "20180108-024036_568633542",
+      "dateCreated": "Jan 8, 2018 2:40:36 AM",
+      "dateStarted": "Jan 8, 2018 3:08:47 AM",
+      "dateFinished": "Jan 8, 2018 3:08:54 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n\nYep, it appears that we have some rows where the data is missing. Looking at the last two results, it appears that 302 (redirect) is causing this rows.\nSince, we do not have enough data to determine whether the redirect was successful (200) or bad request (500), we will remove these rows.",
+      "user": "anonymous",
+      "dateUpdated": "Jan 8, 2018 3:07:19 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/text",
+        "editorHide": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cp\u003eYep, it appears that we have some rows where the data is missing. Looking at the last two results, it appears that 302 (redirect) is causing this rows.\n\u003cbr  /\u003eSince, we do not have enough data to determine whether the redirect was successful (200) or bad request (500), we will remove these rows.\u003c/p\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1515379345468_-13870991",
+      "id": "20180108-024225_1653948606",
+      "dateCreated": "Jan 8, 2018 2:42:25 AM",
+      "dateStarted": "Jan 8, 2018 3:07:20 AM",
+      "dateFinished": "Jan 8, 2018 3:07:20 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\n\nclean_logs_df \u003d logsDF.na.drop(subset \u003d [\u0027status_code\u0027])",
+      "user": "anonymous",
+      "dateUpdated": "Jan 8, 2018 3:07:19 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1515379361996_1193317816",
+      "id": "20180108-024241_826412267",
+      "dateCreated": "Jan 8, 2018 2:42:41 AM",
+      "dateStarted": "Jan 8, 2018 3:08:51 AM",
+      "dateFinished": "Jan 8, 2018 3:08:54 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\nclean_logs_df.filter(clean_logs_df[\u0027status_code\u0027].isNull()).count()",
+      "user": "anonymous",
+      "dateUpdated": "Jan 8, 2018 3:07:20 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "0\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1515379382230_-509950241",
+      "id": "20180108-024302_1179815874",
+      "dateCreated": "Jan 8, 2018 2:43:02 AM",
+      "dateStarted": "Jan 8, 2018 3:08:54 AM",
+      "dateFinished": "Jan 8, 2018 3:09:05 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\nNow, with regards to the content size having null values. Let\u0027s display 5 lines from clean_logs_df where content-size is null.",
+      "user": "anonymous",
+      "dateUpdated": "Jan 8, 2018 3:07:20 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true
+        },
+        "editorMode": "ace/mode/markdown"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cp\u003eNow, with regards to the content size having null values. Let\u0027s display 5 lines from clean_logs_df where content-size is null.\u003c/p\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1515379392467_1422274060",
+      "id": "20180108-024312_2112327863",
+      "dateCreated": "Jan 8, 2018 2:43:12 AM",
+      "dateStarted": "Jan 8, 2018 3:07:20 AM",
+      "dateFinished": "Jan 8, 2018 3:07:20 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\nclean_logs_df.filter(clean_logs_df[\u0027content_size\u0027].isNull()).show(5, truncate\u003dFalse)\n",
+      "user": "anonymous",
+      "dateUpdated": "Jan 8, 2018 3:07:20 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+------------------+--------------------------+------------------------------------+-----------+------------+\n|remotehost        |timestamp                 |page_requested                      |status_code|content_size|\n+------------------+--------------------------+------------------------------------+-----------+------------+\n|ppp19.glas.apc.org|28/Aug/1995:00:00:43 -0400|\"GET /atomicbk/ HTTP/1.0\"           |304        |null        |\n|ppp19.glas.apc.org|28/Aug/1995:00:00:43 -0400|\"GET /atomicbk/contest.gif HTTP/1.0\"|304        |null        |\n|ppp19.glas.apc.org|28/Aug/1995:00:00:44 -0400|\"GET /atomicbk/artgal.gif HTTP/1.0\" |304        |null        |\n|ppp19.glas.apc.org|28/Aug/1995:00:00:44 -0400|\"GET /atomicbk/email.gif HTTP/1.0\"  |304        |null        |\n|ppp19.glas.apc.org|28/Aug/1995:00:00:45 -0400|\"GET /atomicbk/promo.gif HTTP/1.0\"  |304        |null        |\n+------------------+--------------------------+------------------------------------+-----------+------------+\nonly showing top 5 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1515379413164_262286774",
+      "id": "20180108-024333_1768387433",
+      "dateCreated": "Jan 8, 2018 2:43:33 AM",
+      "dateStarted": "Jan 8, 2018 3:08:55 AM",
+      "dateFinished": "Jan 8, 2018 3:09:05 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\nlogs.filter(logs[\u0027value\u0027].contains(\u002728/Aug/1995:00:00:43 -0400\u0027)).show(truncate\u003dFalse)\n",
+      "user": "anonymous",
+      "dateUpdated": "Jan 8, 2018 3:07:21 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+----------------------------------------------------------------------------------------------+\n|value                                                                                         |\n+----------------------------------------------------------------------------------------------+\n|ppp19.glas.apc.org - - [28/Aug/1995:00:00:43 -0400] \"GET /atomicbk/ HTTP/1.0\" 304 -           |\n|ppp19.glas.apc.org - - [28/Aug/1995:00:00:43 -0400] \"GET /atomicbk/contest.gif HTTP/1.0\" 304 -|\n+----------------------------------------------------------------------------------------------+\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1515379429321_147093611",
+      "id": "20180108-024349_917917262",
+      "dateCreated": "Jan 8, 2018 2:43:49 AM",
+      "dateStarted": "Jan 8, 2018 3:09:05 AM",
+      "dateFinished": "Jan 8, 2018 3:09:09 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\nIt appears that they have \u0027-\u0027 instead of any digit which is what regex is expecting. Since, there is - we can safely replace it with value 0.",
+      "user": "anonymous",
+      "dateUpdated": "Jan 8, 2018 3:07:21 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true
+        },
+        "editorMode": "ace/mode/markdown"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cp\u003eIt appears that they have \u0027-\u0027 instead of any digit which is what regex is expecting. Since, there is - we can safely replace it with value 0.\u003c/p\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1515379439882_-861333256",
+      "id": "20180108-024359_95713129",
+      "dateCreated": "Jan 8, 2018 2:43:59 AM",
+      "dateStarted": "Jan 8, 2018 3:07:21 AM",
+      "dateFinished": "Jan 8, 2018 3:07:21 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\n\n# Fill null value with 0\nclean_logs_df \u003d clean_logs_df.na.fill(0)\n\n# Check if we have anymore null values\nclean_logs_df.filter(clean_logs_df[\u0027content_size\u0027].isNull()).count()",
+      "user": "anonymous",
+      "dateUpdated": "Jan 8, 2018 3:07:21 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "0\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1515379453586_-782044334",
+      "id": "20180108-024413_1825110457",
+      "dateCreated": "Jan 8, 2018 2:44:13 AM",
+      "dateStarted": "Jan 8, 2018 3:09:06 AM",
+      "dateFinished": "Jan 8, 2018 3:09:09 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\n## Data Visualization\n",
+      "user": "anonymous",
+      "dateUpdated": "Jan 8, 2018 3:07:22 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true
+        },
+        "editorMode": "ace/mode/markdown"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003ch2\u003eData Visualization\u003c/h2\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1515379478601_-353018662",
+      "id": "20180108-024438_1195220769",
+      "dateCreated": "Jan 8, 2018 2:44:38 AM",
+      "dateStarted": "Jan 8, 2018 3:07:22 AM",
+      "dateFinished": "Jan 8, 2018 3:07:22 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\nwe will try to visualize the number of requests by status code.\n",
+      "user": "anonymous",
+      "dateUpdated": "Jan 8, 2018 3:07:22 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "markdown",
+          "editOnDblClick": true
+        },
+        "editorMode": "ace/mode/markdown"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cp\u003ewe will try to visualize the number of requests by status code.\u003c/p\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1515379496176_620193552",
+      "id": "20180108-024456_821874217",
+      "dateCreated": "Jan 8, 2018 2:44:56 AM",
+      "dateStarted": "Jan 8, 2018 3:07:22 AM",
+      "dateFinished": "Jan 8, 2018 3:07:22 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Number of status code and request count",
+      "text": "%pyspark \n\nstatus_code_df \u003d clean_logs_df.groupby(\u0027status_code\u0027).count()\nstatus_code_pd_df \u003d status_code_df.toPandas()\nstatus_code_pd_df\n",
+      "user": "anonymous",
+      "dateUpdated": "Jan 8, 2018 3:15:00 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/python",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "   status_code    count\n0          500     2050\n1          403     2425\n2          404    70927\n3          200  2955038\n4          304   268742\n5          204      368\n6          302    29082\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1515379504721_1528985778",
+      "id": "20180108-024504_1800475464",
+      "dateCreated": "Jan 8, 2018 2:45:04 AM",
+      "dateStarted": "Jan 8, 2018 3:09:09 AM",
+      "dateFinished": "Jan 8, 2018 3:09:24 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\nimport matplotlib.pyplot as plt\nimport seaborn as sns\nsns.axes_style(\u0027white\u0027)\nsns.set_style(\u0027white\u0027)\n",
+      "user": "anonymous",
+      "dateUpdated": "Jan 8, 2018 3:07:22 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "python",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/python"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": []
+      },
+      "apps": [],
+      "jobName": "paragraph_1515379551470_-765980114",
+      "id": "20180108-024551_752663733",
+      "dateCreated": "Jan 8, 2018 2:45:51 AM",
+      "dateStarted": "Jan 8, 2018 3:09:10 AM",
+      "dateFinished": "Jan 8, 2018 3:09:25 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Bar plot showing number of requests by status code",
+      "text": "%pyspark\nplt.figure(figsize\u003d(16,5))\nsns.barplot(status_code_pd_df[\u0027status_code\u0027],status_code_pd_df[\u0027count\u0027])",
+      "user": "anonymous",
+      "dateUpdated": "Jan 8, 2018 3:14:42 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/text",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "\u003cmatplotlib.axes._subplots.AxesSubplot object at 0x7f77a9ac5f50\u003e\n"
+          },
+          {
+            "type": "HTML",
+            "data": "\u003cdiv style\u003d\u0027width:auto;height:auto\u0027\u003e\u003cimg src\u003ddata:image/png;base64,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PjlJsm7dujQ2NqaxsTHz5s3LVVddlba2trS1tWXGjBmZN29eGhsbc88992TdunVJktmzZ2fixIlZtmxZevTokQULFiRJ7rrrrvTo0SPLli3LxIkTM3v27NfcAwAAAOh8BKAOtnTp0vb/7rvvvsyePTtve9vbXve8D33oQ+nZs+cb2qOpqSkjR45Mly5d0q9fv/Tv3z9r167N2rVr079///Tr1y9dunTJyJEj09TUlHK5nIcffjgNDQ1JkrFjx6apqSlJcv/992fs2LFJkoaGhjz00EMpl8t73AMAAADofLwHUAf7wQ9+0P7nqqqqvOtd78rXvva1fb7ebbfdlkWLFuWYY47J1KlT07Nnz7S0tOT4449vP6a2tjYtLS1Jkj59+uy2vnbt2mzevDk9evRIdXV1+zGvHN/S0pLDDjssSVJdXZ3u3btn8+bNr7kHAAAA0LkIQB3smmuu6bBrnX322bnoootSKpXy5S9/Oddee22HXh8AAAB4a/ASsA7W3Nyciy++OIMHD87gwYNzySWXpLm5eZ+u9c53vjNVVVU56KCDMmHChDz22GNJXn42zv+9ZktLS2pra/e43rt372zbti27du1qn7G2trb9Wk8//XSSZNeuXXn22WfTu3fvPV4LAAAA6HwEoA42bdq01NXVZdWqVVm1alU+/OEPZ9q0aft0rdbW1vY/L1++PAMHDkyS1NXVpbGxMTt37syGDRuyfv36HHfccTn22GOzfv36bNiwITt37kxjY2Pq6upSKpVywgknZMmSJUmShQsXpq6urv1aCxcuTJIsWbIkJ554Ykql0h73AAAAADofLwHrYL/73e9y1llntX88bty4zJ8//3XPu/zyy/PjH/84mzdvzrBhw3LJJZfkxz/+cX7+858nSd71rndlxowZSZKBAwfmtNNOy+mnn56qqqpcccUVqaqqSpJcccUVueCCC9LW1pazzjqrPRpNmTIll112WebMmZOjjz46EyZMSJKMHz8+U6ZMSX19fXr27JkvfelLr7sHAAAA0LmUyuVyudJDFMn555+fcePG5YwzzkiS3HPPPbn77rvfUATqbDZu3Jjhw4enqakpffv2fcPnfWDKLftxKvbVI9efV+kRAACAA8i+fs/HgclLwDrYrFmz8v3vfz9DhgzJ0KFDs2TJklx77bWVHgsAAAB4C/MSsA52ww035LrrrkvP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3Nycv/7rv67gxHSUWbNmZcqUKTnooJe/RN68efNrPvZvu+22nHLKKbn++uvzz//8zxWZmY6zN/ffY794Pv7xj2fcuHG54447ksTX/BSSAASv47nnnsull16az372s7v9tC95+SfFfuJXbG/0/n/+85/PZz7zmfYvGuncqqqqsnjx4qxYsSJr167Nr3/969c9Z/HixXn88cdzwQUXvAkTsj+90fv/0ksv5dprr80//dM/vckTsj/84Ac/yMEHH7xXv+r4nHPOyfLly/OZz3wmX//61/fjdOxve3P/PfaL59vf/nYWLlyYb3zjG7ntttvyn//5n7t93tf8FIXfAgav4cUXX8yll16aUaNGZcSIEUmSQw45JK2trampqUlra2sOPvjgJEltbe1uL/1obm5ObW1tReamY+zN/X/88cdz+eWXJ3n5J4YrVqxIdXV1TjnllIrNzx+vR48eOeGEE7JmzZps27Ytu3btSnV19R88vh988MHcdNNN+da3vpUuXbpUcGI60uvd/+eeey6/+MUvct555yVJnnnmmXzyk5/M17/+9Rx77LEVnp699eijj+b+++/PypUrs2PHjmzfvj2f//znX/Ox/4qRI0d6H5BObm/uv8d+8bzyuD7kkENSX1+ftWvX+pqfQvKjatiDcrmcz33ucxkwYEAmTZrUvl5XV5dFixYlSRYtWpThw4fvtl4ul7NmzZp07969/WmjdD57e//vv//+9v8aGhpy5ZVXij+d1O9+97ts27YtSfLCCy/kwQcfzLvf/e6ccMIJWbJkSZJk4cKFqaurS5L87Gc/yxVXXJGvf/3r3v+pAPbm/nfv3j0/+tGP2h/7gwYN8g1gJ/bpT386K1euzP33359/+Zd/yYknnpgvfvGLe3zsr1+/vv3cBx54IP3796/E2HSQvbn/HvvF8vzzz2f79u3tf/7hD3+YgQMH+pqfQvIMINiDRx55JIsXL85RRx2V0aNHJ0kuv/zyXHjhhZk8eXIWLFiQww8/PHPmzEmSnHzyyVmxYkXq6+vTtWvXzJo1q5Lj80fa2/tPcbS2tmbq1Klpa2tLuVzOqaeemg9/+MM58sgjc9lll2XOnDk5+uijM2HChCTJF77whTz//PP51Kc+lSQ57LDDctNNN1Xyr8AfYW/vP8U3ZcqUV7333/rWt/LQQw+luro6PXr0yHXXXVfhSdkf9nT/KY5Nmzbl4osvTvLye8CdccYZGTZsWI499lhf81M4pXK5XK70EAAAAADsP14CBgAAAFBwAhAAAABAwQlAAAAAAAUnAAEAAAAUnAAEAAAAUHACEAAAAEDBCUAAQGF885vfzO9///sOO+7N8KMf/Sif+MQnKj0GAFBwAhAAUBi33HLLGwo7b/Q4AICiqK70AAAA++L555/P5MmT09zcnJdeeimnnnpqWltbc/7556dXr1659dZbc+WVV+axxx7Ljh070tDQkEsvvTS33HLLHxz3/ve/Pz/96U+TJPfdd18eeOCBXHvttfn+97+fr371qznooIPSvXv33Hbbba86S1tbW2bPnp1Vq1alVCrlIx/5SM4999w89NBDue6669LW1pZjjjkmV111Vbp06ZKVK1dm1qxZ6dq1az7wgQ/s9neaOXNmfvnLX2bXrl35h3/4h5xyyilvyr8nAFBsAhAA0CmtWrUqNTU1mTt3bpLk2Wefzd1335358+fn4IMPTpJcdtll6dWrV9ra2jJx4sT8/Oc/z3nnnZdvfvObux23J1/72tfyr//6r6mtrc22bdv2eNwdd9yRp556KosWLUp1dXW2bNmSHTt2ZOrUqfnmN7+ZI444Iv/4j/+Y22+/PWeffXb+3//7f5k/f3769++fyZMnt1/npptuyoknnphrrrkm27Zty4QJE3LSSSflT//0TzvgXwwAeCvzEjAAoFM66qij8uCDD+b666/PT37yk3Tv3v0Pjvn+97+fsWPHZsyYMfnlL3+ZX/3qV3u1x/vf//5MnTo1d955Z9ra2vZ43EMPPZSPfvSjqa5++WdrvXr1yv/8z/+kb9++OeKII5IkY8eOzU9+8pP8+te/Tt++ffNnf/ZnKZVKOfPMM9uvs3r16nzjG9/I6NGjc+6552bHjh15+umn92pmAIBX4xlAAECndMQRR+Tuu+/OihUrMmfOnJx44om7fX7Dhg35t3/7tyxYsCA9e/bM1KlTs2PHjte97v89ZsaMGfmv//qvPPDAAznrrLPyne98J7179+7wv8v/dcMNN2TAgAH7dQ8A4K3HM4AAgE6ppaUlXbt2zejRo/Pxj388P/vZz/KOd7wjzz33XJLkueeeS9euXdO9e/f87//+b1auXNl+7v89Lkne+c535le/+lVeeumlLF++vH39t7/9bY4//vh86lOfSu/evdPc3Pyqs5x00km54447smvXriTJli1bcsQRR+Spp57Kb37zmyTJ4sWL86EPfSgDBgzIU089ld/+9rdJksbGxvbrDB06NN/61rdSLpeTJD/72c864p8KAMAzgACAzukXv/hFvvCFL+Sggw5KdXV1pk+fnjVr1uSCCy5ITU1Nbr311rz3ve/Naaedlj59+uQv/uIv2s/9yEc+sttxn/70p/OJT3wiBx98cI455pg8//zzSZIvfOEL+c1vfpNyuZwTTzwx73nPe151lgkTJmT9+vU588wzU11dnY985CP52Mc+lmuuuSaf+tSn2t8E+uyzz06XLl0yY8aMXHjhhe1vAv1KjLrooosya9asnHnmmXnppZfSt2/f3Hzzzfv/HxMAKLxS+ZUfMQEAAABQSF4CBgAAAFBwXgIGAPAGrVq1KrNnz95trW/fvvnqV79aoYkAAN4YLwEDAAAAKDgvAQMAAAAoOAEIAAAAoOAEIAAAAICCE4AAAAAACk4AAgAAACg4AQgAAACg4AQgAAAAgIITgAAAAAAKTgACAAAAKLj/D0Y/ZURV0Ms3AAAAAElFTkSuQmCC style\u003d\u0027width\u003dauto;height:auto\u0027\u003e\u003cdiv\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1515379675084_1189129906",
+      "id": "20180108-024755_1147567381",
+      "dateCreated": "Jan 8, 2018 2:47:55 AM",
+      "dateStarted": "Jan 8, 2018 3:10:01 AM",
+      "dateFinished": "Jan 8, 2018 3:10:02 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%md\nLet\u0027s get a list of top 10 pages",
+      "user": "anonymous",
+      "dateUpdated": "Jan 8, 2018 3:10:39 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/text"
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "HTML",
+            "data": "\u003cp\u003eLet\u0027s get a list of top 10 pages\u003c/p\u003e\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1515379696412_-1198775010",
+      "id": "20180108-024816_1061787440",
+      "dateCreated": "Jan 8, 2018 2:48:16 AM",
+      "dateStarted": "Jan 8, 2018 3:10:39 AM",
+      "dateFinished": "Jan 8, 2018 3:10:39 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "title": "Top 10 pages visited",
+      "text": "%pyspark\n\nfrom pyspark.sql.functions import desc\ntop_10_pages \u003d clean_logs_df.filter(clean_logs_df[\u0027page_requested\u0027].rlike(\u0027html\u0027)).groupby(\u0027page_requested\u0027) \\\n                .count() \\\n                .sort(desc(\u0027count\u0027))\ntop_10_pages.show(10, truncate\u003dFalse)",
+      "user": "anonymous",
+      "dateUpdated": "Jan 8, 2018 3:14:16 AM",
+      "config": {
+        "colWidth": 12.0,
+        "enabled": true,
+        "results": {},
+        "editorSetting": {
+          "language": "text",
+          "editOnDblClick": false
+        },
+        "editorMode": "ace/mode/text",
+        "title": true
+      },
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "results": {
+        "code": "SUCCESS",
+        "msg": [
+          {
+            "type": "TEXT",
+            "data": "+--------------------------------------------------+-----+\n|page_requested                                    |count|\n+--------------------------------------------------+-----+\n|\"GET /pub/journalism/awesome.html HTTP/1.0\"       |34717|\n|\"GET /pub/job/vk/vendela.html HTTP/1.0\"           |27194|\n|\"GET /pub/atomicbk/catalog/sleazbk.html HTTP/1.0\" |20785|\n|\"GET /pub/atomicbk/catalog/erotica.html HTTP/1.0\" |8550 |\n|\"GET /pub/jeffd/index.html HTTP/1.0\"              |8514 |\n|\"GET /atomicbk/catalog/catalog.html HTTP/1.0\"     |8070 |\n|\"GET /pub/atomicbk/catalog/adultcom.html HTTP/1.0\"|7725 |\n|\"GET /html/usage/usage.graph.small.gif HTTP/1.0\"  |7117 |\n|\"GET /pub/sshay/gallery.html HTTP/1.0\"            |6541 |\n|\"GET /pub/job/swim/swim.html HTTP/1.0\"            |5808 |\n+--------------------------------------------------+-----+\nonly showing top 10 rows\n\n"
+          }
+        ]
+      },
+      "apps": [],
+      "jobName": "paragraph_1515381039281_1149475054",
+      "id": "20180108-031039_380382391",
+      "dateCreated": "Jan 8, 2018 3:10:39 AM",
+      "dateStarted": "Jan 8, 2018 3:11:04 AM",
+      "dateFinished": "Jan 8, 2018 3:11:42 AM",
+      "status": "FINISHED",
+      "progressUpdateIntervalMs": 500
+    },
+    {
+      "text": "%pyspark\n",
+      "user": "anonymous",
+      "dateUpdated": "Jan 8, 2018 3:11:18 AM",
+      "config": {},
+      "settings": {
+        "params": {},
+        "forms": {}
+      },
+      "apps": [],
+      "jobName": "paragraph_1515381078283_-839691560",
+      "id": "20180108-031118_1871454484",
+      "dateCreated": "Jan 8, 2018 3:11:18 AM",
+      "status": "READY",
+      "errorMessage": "",
+      "progressUpdateIntervalMs": 500
+    }
+  ],
+  "name": "AnalyzingApacheLogFiles",
+  "id": "2D5SPWWQG",
+  "angularObjects": {
+    "2BRWU4WXC:shared_process": [],
+    "2AM1YV5CU:shared_process": [],
+    "2AJXGMUUJ:shared_process": [],
+    "2ANGGHHMQ:shared_process": [],
+    "2AKK3QQXU:shared_process": []
+  },
+  "config": {
+    "looknfeel": "default",
+    "personalizedMode": "false"
+  },
+  "info": {}
+}
